@@ -1,0 +1,3 @@
+rootProject.name = "ClipCollector"
+include(":app")
+
