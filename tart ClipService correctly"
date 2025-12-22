@@ -1,0 +1,104 @@
+[1mdiff --git a/app/src/main/java/com/example/clipcollector/MainActivity.kt b/app/src/main/java/com/example/clipcollector/MainActivity.kt[m
+[1mindex ce109e9..6c783c9 100644[m
+[1m--- a/app/src/main/java/com/example/clipcollector/MainActivity.kt[m
+[1m+++ b/app/src/main/java/com/example/clipcollector/MainActivity.kt[m
+[36m@@ -1,38 +1,67 @@[m
+[31m-package com.example.clipcollector[m
+[32m+[m[32m1  package com.example.clipcollector[m
+[32m+[m[32m     2[m
+[32m+[m[32m     3  import android.content.Intent[m
+[32m+[m[32m     4  import android.net.Uri[m
+[32m+[m[32m     5  import android.os.Bundle[m
+[32m+[m[32m     6  import android.provider.Settings[m
+[32m+[m[32m     7  import android.widget.TextView[m
+[32m+[m[32m     8  import android.widget.Button[m
+[32m+[m[32m     9  import androidx.appcompat.app.AppCompatActivity[m
+[32m+[m[32mimport android.Manifest[m
+[32m+[m[32mimport android.content.pm.PackageManager[m
+[32m+[m[32mimport androidx.core.app.ActivityCompat[m
+[32m+[m[32mimport androidx.core.content.ContextCompat[m
+[32m+[m[32m    10[m
+ [m
+[31m-import android.content.Intent[m
+[31m-import android.net.Uri[m
+[31m-import android.os.Bundle[m
+[31m-import android.provider.Settings[m
+[31m-import android.widget.TextView[m
+[31m-import android.widget.Button[m
+[31m-import androidx.appcompat.app.AppCompatActivity[m
+[32m+[m[32m    11  class MainActivity : AppCompatActivity() {[m
+[32m+[m[32m    12[m
+[32m+[m[32m    13      private val logPath = "/sdcard/ClipCollector/cliplog.txt"[m
+ [m
+[31m-class MainActivity : AppCompatActivity() {[m
+[32m+[m[32moverride fun onCreate(savedInstanceState: Bundle?) {[m
+[32m+[m[32m    super.onCreate(savedInstanceState)[m
+[32m+[m[32m    setContentView(R.layout.activity_main)[m
+ [m
+[31m-    private val logPath = "/sdcard/ClipCollector/cliplog.txt"[m
+[31m-[m
+[31m-    override fun onCreate(savedInstanceState: Bundle?) {[m
+[31m-        super.onCreate(savedInstanceState)[m
+[31m-        setContentView(R.layout.activity_main)[m
+[31m-[m
+[31m-        val tvStatus = findViewById<TextView>(R.id.tvStatus)[m
+[31m-        val btnStart = findViewById<Button>(R.id.btnStart)[m
+[31m-[m
+[31m-        tvStatus.text = "Log file:\n$logPath"[m
+[31m-[m
+[31m-        btnStart.setOnClickListener {[m
+[31m-            if (!Settings.canDrawOverlays(this)) {[m
+[31m-                val intent = Intent([m
+[31m-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,[m
+[31m-                    Uri.parse("package:$packageName")[m
+[31m-                )[m
+[31m-                startActivity(intent)[m
+[31m-            } else {[m
+[31m-                startService(Intent(this, FloatingService::class.java))[m
+[31m-                tvStatus.text = "Сервис запущен\nЛог: $logPath"[m
+[31m-            }[m
+[31m-        }[m
+[32m+[m[32m    checkStoragePermission()[m
+[32m+[m[32m}[m
+[32m+[m[32m    14[m
+[32m+[m[32mprivate fun checkStoragePermission() {[m
+[32m+[m[32m    if (ContextCompat.checkSelfPermission([m
+[32m+[m[32m            this,[m
+[32m+[m[32m            Manifest.permission.WRITE_EXTERNAL_STORAGE[m
+[32m+[m[32m        ) != PackageManager.PERMISSION_GRANTED[m
+[32m+[m[32m    ) {[m
+[32m+[m[32m        ActivityCompat.requestPermissions([m
+[32m+[m[32m            this,[m
+[32m+[m[32m            arrayOf([m
+[32m+[m[32m                Manifest.permission.WRITE_EXTERNAL_STORAGE,[m
+[32m+[m[32m                Manifest.permission.READ_EXTERNAL_STORAGE[m
+[32m+[m[32m            ),[m
+[32m+[m[32m            1001[m
+[32m+[m[32m        )[m
+     }[m
+ }[m
+ [m
+[32m+[m[32m    15      override fun onCreate(savedInstanceState: Bundle?) {[m
+[32m+[m[32m    16          super.onCreate(savedInstanceState)[m
+[32m+[m[32m    17          setContentView(R.layout.activity_main)[m
+[32m+[m[32m    18[m
+[32m+[m[32m    19          val tvStatus = findViewById<TextView>(R.id.tvStatus)[m
+[32m+[m[32m    20          val btnStart = findViewById<Button>(R.id.btnStart)[m
+[32m+[m[32m    21[m
+[32m+[m[32m    22          tvStatus.text = "Log file:\n$logPath"[m
+[32m+[m[32m    23[m
+[32m+[m[32m    24          btnStart.setOnClickListener {[m
+[32m+[m[32m    25              if (!Settings.canDrawOverlays(this)) {[m
+[32m+[m[32m    26                  val intent = Intent([m
+[32m+[m[32m    27                      Settings.ACTION_MANAGE_OVERLAY_PERMISSION,[m
+[32m+[m[32m    28                      Uri.parse("package:$packageName")[m
+[32m+[m[32m    29                  )[m
+[32m+[m[32m    30                  startActivity(intent)[m
+[32m+[m[32m    31              } else {[m
+[32m+[m[32m    32                  startService(Intent(this, FloatingService::class.java))[m
+[32m+[m[32m    33                  tvStatus.text = "Сервис запущен\nЛог: $logPath"[m
+[32m+[m[32m    34              }[m
+[32m+[m[32m    35          }[m
+[32m+[m[32m    36      }[m
+[32m+[m[32m    37  }[m
+[32m+[m[32m    38[m
